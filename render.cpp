@@ -2,6 +2,7 @@
 
 bool setup(BelaContext *context, void *userData)
 {
+	printf("setup happening");
 	return true;
 }
 
