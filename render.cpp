@@ -8,7 +8,8 @@ float gInverseSampleRate;
 bool setup(BelaContext *context, void *userData)
 {
 	printf("setup happening");
-		gInverseSampleRate = 1.0 / context->audioSampleRate;
+	
+	gInverseSampleRate = 1.0 / context->audioSampleRate;
 	gPhase = 0.0;
 
 	return true;
@@ -16,23 +17,18 @@ bool setup(BelaContext *context, void *userData)
 
 void render(BelaContext *context, void *userData)
 {
-	for(unsigned int n = 0; n < context->audioFrames; n++) {
-		float out = 0.8 * sinf(gPhase);
-		gPhase += 2.0 * M_PI * gFrequency * gInverseSampleRate;
-		if(gPhase > 2.0 * M_PI)
-			gPhase -= 2.0 * M_PI;
-
-		for(unsigned int channel = 0; channel < context->audioOutChannels; channel++) {
-			// Two equivalent ways to write this code
-
-			// The long way, using the buffers directly:
-			// context->audioOut[n * context->audioOutChannels + channel] = out;
-
-			// Or using the macros:
-			audioWrite(context, n, channel, out);
+	for(unsigned int n = 0; n < context->audioFrames; n++) 
+	{
+		//for(unsigned int channel = 0; channel < context->audioOutChannels; channel++) 
+		for(unsigned int channel = 0; channel < 1; channel++) 
+		{
+			// Read the audio input and half the amplitude
+			float input = analogRead(context, n, channel);
+			//if(input>0.4) printf("data");
+			analogWrite(context, n, channel, input);
 		}
-	}
-}
+    }
+}  
 
 void cleanup(BelaContext *context, void *userData)
 {
