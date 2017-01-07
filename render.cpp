@@ -57,12 +57,14 @@ void render(BelaContext *context, void *userData)
 		   if(i1_index>=32)
 		     i1_playing=false;
 		}
+		else 
+		    analogWrite(context,n,0,0.0f); //impulse1[i1_index]);
 		
 		
 		analogWrite(context,n,2,content[(index+BUFFER_LENGTH-taps[0])%BUFFER_LENGTH]);
 		analogWrite(context,n,3,content[(index+BUFFER_LENGTH-taps[1])%BUFFER_LENGTH]);
 		
-		content[index] = analogRead(context, n, 0);
+		content[(index+BUFFER_LENGTH-6)%BUFFER_LENGTH] = analogRead(context, n, 0);
 		
 		index=(index+1)%BUFFER_LENGTH;
     }
